@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS Authors (
+    id INTEGER PRIMARY KEY,
+    author TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Books (
+    id INTEGER PRIMARY KEY,
+    book TEXT NOT NULL,
+    author_id INTEGER NOT NULL REFERENCES Authors(id)
+);
+CREATE INDEX IF NOT EXISTS books_author_id ON Books(author_id);

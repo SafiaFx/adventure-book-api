@@ -1,0 +1,9 @@
+.git
+.env
+.env.*
+vendor
+.idea
+.DS_Store
+.phpunit.cache
+var/*.sqlite*
+logs/*

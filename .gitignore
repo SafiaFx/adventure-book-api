@@ -1,6 +1,12 @@
-.idea/
-.DS_Store
-/coverage/
 /vendor/
+/.env
+/.env.*
+!/.env.example
+/.phpunit.cache/
+/coverage/
+/var/*.sqlite*
 /logs/*
 !/logs/README.md
+.idea/
+.DS_Store
+__MACOSX/

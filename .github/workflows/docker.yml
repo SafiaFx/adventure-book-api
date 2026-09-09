@@ -1,0 +1,17 @@
+name: MySQL smoke test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  mysql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cp .env.example .env
+      - run: docker compose up --build -d --wait --wait-timeout 180
+      - name: Check HTTP responses against MySQL
+        run: python3 tests/smoke.py
+      - if: failure()
+        run: docker compose logs
+      - if: always()
+        run: docker compose down -v

@@ -1,18 +1,36 @@
-version: '3.7'
-
-volumes:
-    logs:
-        driver: local
-
 services:
-    slim:
-        image: php:7-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public
-        environment:
-            docker: "true"
-        ports:
-            - 8080:8080
-        volumes:
-            - .:/var/www
-            - logs:/var/www/logs
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    environment:
+      DB_DRIVER: mysql
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-book_app}
+      DB_USER: ${DB_USER:-book_api}
+      DB_PASSWORD: ${DB_PASSWORD:?Copy .env.example to .env first}
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-book_app}
+      MYSQL_USER: ${DB_USER:-book_api}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Copy .env.example to .env first}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env}
+    volumes:
+      - books_data:/var/lib/mysql
+      - ./database/01-schema.mysql.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          MYSQL_PWD="$$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u"$$MYSQL_USER" "$$MYSQL_DATABASE" -e 'SELECT COUNT(*) FROM Books' >/dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+volumes:
+  books_data:

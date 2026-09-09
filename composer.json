@@ -1,36 +1,20 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
+    "name": "safiafx/adventure-book-api",
+    "description": "A read-only books and authors API built with PHP, Slim 4 and PDO.",
     "keywords": [
-        "microframework",
-        "rest",
-        "router",
-        "psr7"
+        "books",
+        "api",
+        "slim",
+        "php"
     ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
-        },
-        {
-            "name": "Pierre Berube",
-            "email": "pierre@lgse.com",
-            "homepage": "http://www.lgse.com/"
-        }
-    ],
     "require": {
-        "php": ">=7.4",
+        "php": "^8.2",
         "ext-json": "*",
         "ext-pdo": "*",
-        "monolog/monolog": "^1.24",
-        "php-di/php-di": "^6.0",
-        "slim/http": "^1.2",
-        "slim/php-view": "^2.2",
-        "slim/psr7": "^1.4",
-        "slim/slim": "^4.1"
+        "php-di/php-di": "^7.0",
+        "slim/psr7": "^1.7",
+        "slim/slim": "^4.15"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.3"
@@ -50,7 +34,8 @@
         }
     },
     "scripts": {
-        "start": "php -S 0.0.0.0:8080 -t public",
-        "test": "phpunit"
+        "start": "@php -S 127.0.0.1:8080 -t public public/router.php",
+        "test": "@php vendor/bin/phpunit",
+        "db:setup": "@php bin/setup-database.php"
     }
 }
