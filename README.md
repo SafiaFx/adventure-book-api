@@ -2,7 +2,26 @@
 
 A small, read-only API for exploring books and their authors, built with **PHP, Slim 4 and PDO**. It demonstrates routing, dependency injection, relational database queries, input validation and automated endpoint testing.
 
-Originally developed as an IO Academy exercise, then improved with assisted refactoring, reproducible setup, error handling and tests. The original project used MySQL; this version also supports SQLite for a quick local demo.
+Originally developed as part of the **IO Academy Full Stack Track course**, then improved with assisted refactoring, reproducible setup, error handling and tests. The original project used MySQL; this version also supports SQLite for a quick local demo.
+
+## Technologies used
+
+| Technology | How it is used in this project |
+| --- | --- |
+| **PHP 8.2+** | Implements the API logic, validates incoming IDs and prepares responses. |
+| **Slim 4** | Routes HTTP requests to controllers and handles errors through middleware. |
+| **PHP-DI** | Supplies controllers with their model and database dependencies, keeping setup separate from request handling. |
+| **PDO** | Connects PHP to the database and executes SQL. Queries involving IDs use prepared statements with bound parameters. |
+| **MySQL** | Stores books and authors in related tables when running with Docker. SQL joins retrieve books by author. |
+| **SQLite** | Provides a simple local demo database without a separate database server, plus isolated databases for automated tests. |
+| **HTTP and JSON** | Let clients request catalogue data through GET endpoints and receive structured data with appropriate HTTP status codes. |
+| **Composer** | Installs PHP dependencies, configures class autoloading and provides commands to start the API, set up SQLite and run tests. |
+| **Docker and Docker Compose** | Package the PHP application and run it alongside MySQL with database initialization and readiness checks. |
+| **PHPUnit** | Tests endpoints, database queries, validation and error responses. |
+| **Python** | Runs a small HTTP smoke test against the running API to check the complete setup. |
+| **GitHub Actions** | Automatically runs the PHP test suite and Docker/MySQL smoke checks on pushes and pull requests. |
+
+A request such as `GET /books/3` is routed by Slim to a controller. The controller validates the ID and asks the model to query the database through PDO, then returns the book as JSON. This separates HTTP handling from database access.
 
 ## Quick start: SQLite
 
@@ -109,8 +128,8 @@ src/Factories/        Database connection configuration
 src/Http/             JSON response and ID validation helpers
 public/               HTTP entry point and development router
 bin/                  Local database setup command
-database/            MySQL/SQLite schemas and sample catalogue
-tests/               Automated endpoint tests
+database/             MySQL/SQLite schemas and sample catalogue
+tests/                Automated endpoint tests
 ```
 
 ## Scope and next steps
